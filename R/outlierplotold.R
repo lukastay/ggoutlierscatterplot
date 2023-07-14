@@ -14,10 +14,9 @@
 #'
 #' @returns A ggplot2 plot.
 #' @examples
-#' outlierplot(x = x, y = y, labels = labels)
-#' outlierplot(x = x, y = y)
-#' outlierplot(x = diamonds$carat, y = diamonds$depth)
-#' outlierplot(x = diamonds$carat, y = diamonds$depth, labels = diamonds$cut)
+#' diamonds <- ggplot2::diamonds
+#' outlierplotold(x = diamonds$carat, y = diamonds$depth)
+#' outlierplotold(x = diamonds$carat, y = diamonds$depth, labels = diamonds$cut)
 #'
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 geom_point

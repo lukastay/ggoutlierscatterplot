@@ -23,6 +23,7 @@ Create Outlier plot
 }
 \examples{
 diamonds <- ggplot2::diamonds
-outlierplot(x = diamonds$carat, y = diamonds$depth)
-outlierplot(x = diamonds$carat, y = diamonds$depth, labels = diamonds$cut)
+outlierplotold(x = diamonds$carat, y = diamonds$depth)
+outlierplotold(x = diamonds$carat, y = diamonds$depth, labels = diamonds$cut)
+
 }

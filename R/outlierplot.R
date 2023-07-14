@@ -1,6 +1,6 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##                                                                            --
-##--------------------------- OUTLIERPLOT VERSION 2-----------------------------
+##--------------------------- OUTLIERPLOT VERSION 3-----------------------------
 ##                                                                            --
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Create Outlier plot
@@ -9,6 +9,7 @@
 #' @param y List or column of numeric values.
 #' @param labels List or column of string labels.
 #' @param alpha Transparency of scatterplot points.
+#' @param withcolor Set to FALSE for black and white graph. Defalts to TRUE.
 #'
 #' @export outlierplot
 #'
@@ -27,8 +28,8 @@
 #' @importFrom stats lm
 #' @importFrom stats predict
 #' @importFrom stats quantile
-#' @importFrom stats residuals
 #' @importFrom dplyr mutate
+#' @importFrom OutliersO3 O3prep
 #' @global labels x y alpha
 
 outlierplot <-
@@ -78,54 +79,24 @@ outlierplot <-
 
     }
 
-    #..................Creating Prediction Interval..................
+    #......................2D Outlier Detection......................
 
-    df.lm <- lm(y ~ x, data = df)
+    avg.x = mean(x)
+    avg.y = mean(y)
 
-    residuals <- residuals(df.lm)
+    df$distance <- with(df, abs(avg.x-x)+abs(avg.y-y))
 
-    xRange = data.frame(x = seq(min(x), max(x), 0.01))
+    df.twocols <- df[,c("x","y")]
 
-    modelConfInt <- predict(df.lm,
-                            level = 0.95,
-                            interval = "prediction")
+    a0 <- O3prep(df.twocols, method="PCS", tols=0.05, boxplotLimits=3)
 
-    insideInterval <-
-      modelConfInt[, 'lwr'] < df[['y']] &
-      df[['y']] < modelConfInt[, 'upr']
+    outlier.indexes <- a0$outList$outM[[3]]$outlierIndices
+
+    df.outliers <- df[outlier.indexes,]
+
+    df.regulars <- df[-(outlier.indexes),]
 
     #................Creating & Dividing Up Dataframes...............
-
-    if (!is.null(labels)) {
-      df <- data.frame(
-        "y" = df$y,
-        "x" = df$x,
-        "insideInterval" = insideInterval,
-        "labels" = df$labels,
-        "residuals",
-        residuals
-      )
-
-    } else {
-      df <- data.frame(
-        "y" = df$y,
-        "x" = df$x,
-        "insideInterval" = insideInterval,
-        "residuals",
-        residuals
-      )
-
-    }
-
-    inside.points <- subset(df, df$insideInterval == 1)
-
-    outside.points <- subset(df, df$insideInterval == 0)
-
-    outside.points <- outside.points |>
-      mutate(residuals = abs(residuals))
-
-    inside.points <- inside.points |>
-      mutate(residuals = abs(residuals))
 
     if(length(x) > 1000){
       labelpercent <- 1
@@ -138,62 +109,62 @@ outlierplot <-
     }
 
     to.label <-
-      outside.points[outside.points$residuals > quantile(outside.points$residuals, prob =
+      df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
                                                            1 - labelpercent / 100), ]
 
     outside.top5 <-
-      outside.points[outside.points$residuals > quantile(outside.points$residuals, prob =
+      df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
                                                            1 - 5 / 100), ]
     outside.5.thru.20 <-
-      outside.points[outside.points$residuals > quantile(outside.points$residuals, prob =
+      df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
                                                            1 - 20 / 100) &
-                       outside.points$residuals < quantile(outside.points$residuals, prob = 1 -
+                    df.outliers$distance < quantile(df.outliers$distance, prob = 1 -
                                                              5 / 100), ]
     outside.20.thru.40 <-
-      outside.points[outside.points$residuals > quantile(outside.points$residuals, prob =
+      df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
                                                            1 - 40 / 100) &
-                       outside.points$residuals < quantile(outside.points$residuals, prob = 1 -
+                    df.outliers$distance < quantile(df.outliers$distance, prob = 1 -
                                                              20 / 100), ]
     outside.40.thru.60 <-
-      outside.points[outside.points$residuals > quantile(outside.points$residuals, prob =
+      df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
                                                            1 - 60 / 100) &
-                       outside.points$residuals < quantile(outside.points$residuals, prob = 1 -
+                    df.outliers$distance < quantile(df.outliers$distance, prob = 1 -
                                                              40 / 100), ]
     outside.60.thru.80 <-
-      outside.points[outside.points$residuals > quantile(outside.points$residuals, prob =
+      df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
                                                            1 - 80 / 100) &
-                       outside.points$residuals < quantile(outside.points$residuals, prob = 1 -
+                    df.outliers$distance < quantile(df.outliers$distance, prob = 1 -
                                                              60 / 100), ]
     outside.80.thru.100 <-
-      outside.points[outside.points$residuals < quantile(outside.points$residuals, prob =
+      df.outliers[df.outliers$distance < quantile(df.outliers$distance, prob =
                                                            1 - 80 / 100), ]
 
     inside.top20 <-
-      inside.points[inside.points$residuals > quantile(inside.points$residuals, prob =
+      df.regulars[df.regulars$distance > quantile(df.regulars$distance, prob =
                                                          1 - 20 / 100), ]
     inside.20.thru.40 <-
-      inside.points[inside.points$residuals > quantile(inside.points$residuals, prob =
+      df.regulars[df.regulars$distance > quantile(df.regulars$distance, prob =
                                                          1 - 40 / 100) &
-                      inside.points$residuals < quantile(inside.points$residuals, prob = 1 -
+                    df.regulars$distance < quantile(df.regulars$distance, prob = 1 -
                                                            20 / 100), ]
     inside.40.thru.60 <-
-      inside.points[inside.points$residuals > quantile(inside.points$residuals, prob =
+      df.regulars[df.regulars$distance > quantile(df.regulars$distance, prob =
                                                          1 - 60 / 100) &
-                      inside.points$residuals < quantile(inside.points$residuals, prob = 1 -
+                    df.regulars$distance < quantile(df.regulars$distance, prob = 1 -
                                                            40 / 100), ]
     inside.60.thru.80 <-
-      inside.points[inside.points$residuals > quantile(inside.points$residuals, prob =
+      df.regulars[df.regulars$distance > quantile(df.regulars$distance, prob =
                                                          1 - 80 / 100) &
-                      inside.points$residuals < quantile(inside.points$residuals, prob = 1 -
+                    df.regulars$distance < quantile(df.regulars$distance, prob = 1 -
                                                            60 / 100), ]
     inside.80.thru.100 <-
-      inside.points[inside.points$residuals < quantile(inside.points$residuals, prob =
+      df.regulars[df.regulars$distance < quantile(df.regulars$distance, prob =
                                                          1 - 80 / 100), ]
 
     #..........................Creating Plot.........................
     if (withcolor == TRUE) {
       #......................Creating Plot: Color......................
-      p <- ggplot(data = df, aes(color = residuals)) +
+      p <- ggplot(data = df, aes(color = distance)) +
         geom_point(
           data = outside.top5,
           aes(x = x, y = y),

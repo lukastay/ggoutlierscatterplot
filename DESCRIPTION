@@ -13,7 +13,8 @@ RoxygenNote: 7.2.3
 Imports:
     ggplot2,
     stats,
-    dplyr
+    dplyr,
+    OutliersO3
 Suggests: 
     roxyglobals (>= 0.2.2)
 Remotes: 
