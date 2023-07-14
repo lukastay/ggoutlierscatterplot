@@ -32,7 +32,7 @@ You can choose your outlier detection method using the detction.method argument.
 outlierplot(x = x, y = y, detection.method = "HDo")
 ```
 
-Outliers are represented with red targets, while other data is shown in black. The code automatically adjusts geom_point transparency to deal with plotting many observations (transparency can also be specified in the function). When labels are passed to the function, outliers will be labelled. Dynamic coloring is based off a mis of the PCS outlyingness index and the outlier detection method chosen. In the future, dynamic coloring will only be based on the chosen outlier detection algorithm.
+Outliers are represented with red targets, while other data is shown in black. The code automatically adjusts geom_point transparency to deal with plotting many observations (transparency can also be specified in the function). When labels are passed to the function, outliers will be labelled. Dynamic coloring is based off a mix of the PCS outlyingness index and the outlier detection method chosen. In the future, dynamic coloring will only be based on the chosen outlier detection algorithm.
 
 Themes, additional geoms, and other ggplot functions can be added to the object returned by outlierplot.
 
