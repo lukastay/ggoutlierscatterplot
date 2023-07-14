@@ -36,14 +36,6 @@ Outliers are represented with red targets, while other data is shown in black. T
 
 Themes, additional geoms, and other ggplot functions can be added to the object returned by outlierplot.
 
-ggoutlierscatterplot uses multiple tools to make outliers stand out:
-
-1) Outliers are colored red
-2) Outliers have a target shape, rather than a dot
-3) Outliers are less transparent
-4) Outliers are larger
-5) When labels are passed, extreme outliers are labeled
-
 To add labels for outliers, use the following syntax:
 
 ```
@@ -109,3 +101,11 @@ Dynamic coloring is based off The PCS outlyingness index. The authors go on to s
 > "The minimum covariance determinant (MCD) method of Rousseeuw is a highly robust estimator of multivariate location and scatter. Its objective is to find h observations (out of n) whose covariance matrix has the lowest determinant. Until now, applications of the MCD were hampered by the computation time of existing algorithms, which were limited to a few hundred objects in a few dimensions. We discuss two important applications of larger size, one about a production process at Philips with n = 677 objects and p = 9 variables, and a dataset from astronomy with n = 137,256 objects and p = 27 variables. To deal with such problems we have developed a new algorithm for the MCD, called FAST-MCD. The basic ideas are an inequality involving order statistics and determinants, and techniques which we call “selective iteration” and “nested extensions.” For small datasets, FAST-MCD typically finds the exact MCD, whereas for larger datasets it gives more accurate results than existing algorithms and is faster by orders of magnitude. Moreover, FASTMCD is able to detect an exact fit—that is, a hyperplane containing h or more observations. The new algorithm makes the MCD method available as a routine tool for analyzing multivariate data. We also propose the distance-distance plot (D-D plot), which displays MCD-based robust distances versus Mahalanobis distances, and illustrate it with some examples."
 >
 > -"A Fast Algorithm for the Minimum Covariance Determinant Estimator" by Peter J. Rousseeuw  and Katrien Van Driessen
+
+ggoutlierscatterplot uses multiple tools to make outliers stand out:
+
+1) Outliers are colored red
+2) Outliers have a target shape, rather than a dot
+3) Outliers are less transparent
+4) Outliers are larger
+5) When labels are passed, extreme outliers are labeled
