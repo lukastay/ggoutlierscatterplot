@@ -1,0 +1,22 @@
+Package: ggoutlierscatterplot
+Type: Package
+Title: Adds Scatterplot With Outliers
+Version: 1.0
+Author: Lukas Taylor
+Maintainer: Lukas Taylor <lukastay@umich.edu>
+Description: Adds scatterplot that detects outliers and displays them with a red target.
+    Outliers are detected by selecting points outside the 95% linear regression prediction interval.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Imports:
+    ggplot2,
+    stats
+Suggests: 
+    roxyglobals (>= 0.2.2)
+Remotes: 
+    anthonynorth/roxyglobals
+Roxygen: list(
+    markdown = TRUE,
+    roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet"))

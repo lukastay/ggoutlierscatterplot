@@ -1,2 +1,2 @@
 # ggoutlierscatterplot
- Returns ggplot scatterplot with outliers marked in red.
+Builds scatterplot with outliers in red.
