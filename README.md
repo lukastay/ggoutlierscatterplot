@@ -31,3 +31,9 @@ If you would like to set the transparency, use alpha:
 ```
 outlierplot(x = x, y = y, alpha = .5)
 ```
+
+You can turn color off with the variable "withcolor":
+
+```
+outlierplot(x = diamonds$carat, y = diamonds$depth, alpha = .5, withcolor = FALSE)
+```
