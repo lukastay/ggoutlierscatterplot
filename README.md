@@ -20,10 +20,19 @@ outlierplot(x = x, y = y)
 
 FastPCS is a faster algorithm of Projection Congruent Subset (PCS). In their article "Finding multivariate outliers with FastPCS" by Kaveh Vakili and Eric Schmitt, the authors remark on the algorithm:
 
-> The main output of FastPCS is an outlyingness index measuring how much each observation departs from the pattern set by the majority of the data. The PCS outlyingness index is affine equivariant (meaning that the outlyingness ranking of the observations is not affected by a linear transformation of the data) and can be computed efficiently for moderate values of p and large values of n. To derive this index, FastPCS proceeds in two steps. First, it strives to select among many possible h-subsets of observations one devoid of outliers. Then, the outlyingness index is simply the distance of each observation to this subset. For easier outlier detection problems, we find that our approach produces results similar to state-of-the-art outlier detection algorithms. When considering more difficult cases however we find that the solution we propose leads to significantly better outcomes.
+> "The main output of FastPCS is an outlyingness index measuring how much each observation departs from the pattern set by the majority of the data. The PCS outlyingness index is affine equivariant (meaning that the outlyingness ranking of the observations is not affected by a linear transformation of the data) and can be computed efficiently for moderate values of p and large values of n. To derive this index, FastPCS proceeds in two steps. First, it strives to select among many possible h-subsets of observations one devoid of outliers. Then, the outlyingness index is simply the distance of each observation to this subset. For easier outlier detection problems, we find that our approach produces results similar to state-of-the-art outlier detection algorithms. When considering more difficult cases however we find that the solution we propose leads to significantly better outcomes."
+>
+> -Finding multivariate outliers with FastPCS" by Kaveh Vakili and Eric Schmitt
 
 
-Dynamic coloring is based off The PCS outlyingness index. Outliers are represented with red targets, while other data is shown in black. The code automatically adjusts geom_point transparency to deal with plotting many observations (transparency can also be specified in the function). When labels are passed to the function, outliers will be labelled. 
+Dynamic coloring is based off The PCS outlyingness index. The authors go on to say:
+
+> "PCS looks for the h-subset of multivariate observations that is most congruent along many univariate projections. In this context, we measure the congruence of a given h-subset along a given projection by the size of its overlap with a second subset that is optimal (in a sense we make precise below) on that projection. The PCS criterion is based on the observation that a spatially cohesive h-subset will tend to be congruent with these optimal h-subsets, and a spatially disjoint one will not."
+>
+> -Finding multivariate outliers with FastPCS" by Kaveh Vakili and Eric Schmitt
+
+
+Outliers are represented with red targets, while other data is shown in black. The code automatically adjusts geom_point transparency to deal with plotting many observations (transparency can also be specified in the function). When labels are passed to the function, outliers will be labelled. 
 
 Themes, additional geoms, and other ggplot functions can be added to the object returned by outlierplot.
 
