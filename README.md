@@ -5,6 +5,13 @@ Just as there is no single formula for determining outliers in one dimension, th
 
 Themes, additional geoms, and other ggplot functions can be added to the object returned by outlierplot.
 
+To install, copy the following code into your R script or console:
+
+```
+library(devtools)
+install_github("lukastay/ggoutlierscatterplot")
+```
+
 Plotting with ggoutlierplot is easy. Use the following syntax:
 
 ```
