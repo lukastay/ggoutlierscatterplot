@@ -1,5 +1,5 @@
 # ggoutlierscatterplot
-R Language: Builds scatterplot designed to pull attention to ourliers.
+R Language: Builds scatterplot designed to pull attention to outliers.
 
 ![outlier scatterplot example](https://github.com/lukastay/ggoutlierscatterplot/blob/main/plotexample.tiff?raw=true)
 
