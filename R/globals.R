@@ -5,5 +5,9 @@ utils::globalVariables(c(
   "x", # <outlierplot>
   "y", # <outlierplot>
   "alpha", # <outlierplot>
+  "labels", # <outlierplotold>
+  "x", # <outlierplotold>
+  "y", # <outlierplotold>
+  "alpha", # <outlierplotold>
   NULL
 ))

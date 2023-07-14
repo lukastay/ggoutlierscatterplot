@@ -10,7 +10,7 @@
 #' @param labels List or column of string labels.
 #' @param alpha Transparency of scatterplot points.
 #'
-#' @export outlierplot
+#' @export outlierplotold
 #'
 #' @returns A ggplot2 plot.
 #' @examples
@@ -27,7 +27,7 @@
 #' @importFrom stats predict
 #' @global labels x y alpha
 
-outlierplot <- function(x, y, labels = NULL, alpha = NULL) {
+outlierplotold <- function(x, y, labels = NULL, alpha = NULL) {
 
   if(is.null(alpha)){
 

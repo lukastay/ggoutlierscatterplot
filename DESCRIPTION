@@ -12,7 +12,8 @@ LazyData: true
 RoxygenNote: 7.2.3
 Imports:
     ggplot2,
-    stats
+    stats,
+    dplyr
 Suggests: 
     roxyglobals (>= 0.2.2)
 Remotes: 
