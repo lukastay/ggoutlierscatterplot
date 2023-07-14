@@ -1,6 +1,6 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##                                                                            --
-##--------------------------- OUTLIERPLOT VERSION 3.5---------------------------
+##--------------------------- OUTLIERPLOT VERSION 4-----------------------------
 ##                                                                            --
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Create Outlier plot
@@ -10,6 +10,9 @@
 #' @param labels List or column of string labels.
 #' @param alpha Transparency of scatterplot points.
 #' @param withcolor Set to FALSE for black and white graph. Defalts to TRUE.
+#' @param notheme Set to false to avoid setting theme.
+#' @param detection.method Method of outlier detection ("HDo", "PCS", "BAC", "adjOut", "DDC", "MCD")
+#' @param default.title Set to true to have title be name of outlier detection method and number of outliers found.
 #'
 #' @export outlierplot
 #'
@@ -25,20 +28,26 @@
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 geom_text
 #' @importFrom ggplot2 scale_colour_gradientn
+#' @importFrom ggplot2 scale_color_manual
 #' @importFrom stats lm
 #' @importFrom stats predict
 #' @importFrom stats quantile
 #' @importFrom dplyr mutate
 #' @importFrom OutliersO3 O3prep
 #' @importFrom FastPCS FastPCS
-#' @global labels x y alpha
+#' @importFrom cowplot theme_minimal_hgrid
+#' @global labels x y alpha distance df.distance
 
 outlierplot <-
   function(x,
            y,
            labels = NULL,
            alpha = NULL,
-           withcolor = TRUE) {
+           withcolor = TRUE,
+           notheme = FALSE,
+           detection.method = "PCS",
+           default.title = FALSE) {
+
     #........................Alpha Adjustment........................
 
     if (is.null(alpha)) {
@@ -88,7 +97,7 @@ outlierplot <-
 
     df$distance <- pcs.results$distance
 
-    a0 <- O3prep(df.twocols, method="PCS", tols=0.05, boxplotLimits=3)
+    a0 <- O3prep(df.twocols, method=detection.method, tols=0.05, boxplotLimits=3)
 
     outlier.indexes <- a0$outList$outM[[3]]$outlierIndices
 
@@ -99,7 +108,7 @@ outlierplot <-
     #................Creating & Dividing Up Dataframes...............
 
     if(length(x) > 1000){
-      labelpercent <- .005
+      labelpercent <- 1
     } else if(length(x) > 100){
       labelpercent <- 1
     } else if(length(x) > 50){
@@ -110,60 +119,63 @@ outlierplot <-
 
     to.label <-
       df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
-                                                           1 - labelpercent / 100), ]
+                                                    1 - labelpercent / 100), ]
 
     outside.top5 <-
       df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
-                                                           1 - 5 / 100), ]
+                                                    1 - 5 / 100), ]
     outside.5.thru.20 <-
       df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
-                                                           1 - 20 / 100) &
+                                                    1 - 20 / 100) &
                     df.outliers$distance < quantile(df.outliers$distance, prob = 1 -
-                                                             5 / 100), ]
+                                                      5 / 100), ]
     outside.20.thru.40 <-
       df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
-                                                           1 - 40 / 100) &
+                                                    1 - 40 / 100) &
                     df.outliers$distance < quantile(df.outliers$distance, prob = 1 -
-                                                             20 / 100), ]
+                                                      20 / 100), ]
     outside.40.thru.60 <-
       df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
-                                                           1 - 60 / 100) &
+                                                    1 - 60 / 100) &
                     df.outliers$distance < quantile(df.outliers$distance, prob = 1 -
-                                                             40 / 100), ]
+                                                      40 / 100), ]
     outside.60.thru.80 <-
       df.outliers[df.outliers$distance > quantile(df.outliers$distance, prob =
-                                                           1 - 80 / 100) &
+                                                    1 - 80 / 100) &
                     df.outliers$distance < quantile(df.outliers$distance, prob = 1 -
-                                                             60 / 100), ]
+                                                      60 / 100), ]
     outside.80.thru.100 <-
       df.outliers[df.outliers$distance < quantile(df.outliers$distance, prob =
-                                                           1 - 80 / 100), ]
+                                                    1 - 80 / 100), ]
 
     inside.top20 <-
       df.regulars[df.regulars$distance > quantile(df.regulars$distance, prob =
-                                                         1 - 20 / 100), ]
+                                                    1 - 20 / 100), ]
     inside.20.thru.40 <-
       df.regulars[df.regulars$distance > quantile(df.regulars$distance, prob =
-                                                         1 - 40 / 100) &
+                                                    1 - 40 / 100) &
                     df.regulars$distance < quantile(df.regulars$distance, prob = 1 -
-                                                           20 / 100), ]
+                                                      20 / 100), ]
     inside.40.thru.60 <-
       df.regulars[df.regulars$distance > quantile(df.regulars$distance, prob =
-                                                         1 - 60 / 100) &
+                                                    1 - 60 / 100) &
                     df.regulars$distance < quantile(df.regulars$distance, prob = 1 -
-                                                           40 / 100), ]
+                                                      40 / 100), ]
     inside.60.thru.80 <-
       df.regulars[df.regulars$distance > quantile(df.regulars$distance, prob =
-                                                         1 - 80 / 100) &
+                                                    1 - 80 / 100) &
                     df.regulars$distance < quantile(df.regulars$distance, prob = 1 -
-                                                           60 / 100), ]
+                                                      60 / 100), ]
     inside.80.thru.100 <-
       df.regulars[df.regulars$distance < quantile(df.regulars$distance, prob =
-                                                         1 - 80 / 100), ]
+                                                    1 - 80 / 100), ]
 
     #..........................Creating Plot.........................
+
     if (withcolor == TRUE) {
+
       #......................Creating Plot: Color......................
+
       p <- ggplot(data = df, aes(color = distance)) +
         geom_point(
           data = outside.top5,
@@ -300,7 +312,9 @@ outlierplot <-
         )
 
     } else {
+
       #..................Creating Plot: Black & White..................
+
       p <- ggplot() +
         geom_point(
           data = outside.top5,
@@ -419,16 +433,32 @@ outlierplot <-
 
     }
 
+    #..........................Adding Labels.........................
+
     if (!is.null(labels)) {
       p <- p + geom_text(
         data = to.label,
         vjust = 0,
-        nudge_y = 1,
+        nudge_y = 1.5,
         check_overlap = TRUE,
         aes(x = x, y = y, label = labels)
 
       )
 
+    }
+
+    #..........................Adding Theme..........................
+
+    if(notheme == FALSE){
+      p <- p + theme_minimal_hgrid(12)
+    }
+
+    #......................Adding Default Title......................
+
+    if(default.title == TRUE){
+      outlier.num <- nrow(df.outliers)
+      to.title <- paste(detection.method, " (n=", as.character(outlier.num), ")", sep = "", collapse=NULL)
+      p <- p + labs(title = to.title)
     }
 
     #.........................Returning Plot.........................

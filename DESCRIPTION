@@ -15,7 +15,9 @@ Imports:
     stats,
     dplyr,
     OutliersO3,
-    FastPCS
+    FastPCS,
+    cowplot,
+    patchwork
 Suggests: 
     roxyglobals (>= 0.2.2)
 Remotes: 
