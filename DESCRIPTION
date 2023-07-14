@@ -14,7 +14,8 @@ Imports:
     ggplot2,
     stats,
     dplyr,
-    OutliersO3
+    OutliersO3,
+    FastPCS
 Suggests: 
     roxyglobals (>= 0.2.2)
 Remotes: 

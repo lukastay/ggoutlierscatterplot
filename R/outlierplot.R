@@ -1,6 +1,6 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##                                                                            --
-##--------------------------- OUTLIERPLOT VERSION 3-----------------------------
+##--------------------------- OUTLIERPLOT VERSION 3.5---------------------------
 ##                                                                            --
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Create Outlier plot
@@ -30,6 +30,7 @@
 #' @importFrom stats quantile
 #' @importFrom dplyr mutate
 #' @importFrom OutliersO3 O3prep
+#' @importFrom FastPCS FastPCS
 #' @global labels x y alpha
 
 outlierplot <-
@@ -79,14 +80,13 @@ outlierplot <-
 
     }
 
-    #......................2D Outlier Detection......................
-
-    avg.x = mean(x)
-    avg.y = mean(y)
-
-    df$distance <- with(df, abs(avg.x-x)+abs(avg.y-y))
+    #..........2D Outlier Detection And Statistical Distance.........
 
     df.twocols <- df[,c("x","y")]
+
+    pcs.results <- FastPCS(df.twocols)
+
+    df$distance <- pcs.results$distance
 
     a0 <- O3prep(df.twocols, method="PCS", tols=0.05, boxplotLimits=3)
 
@@ -99,13 +99,13 @@ outlierplot <-
     #................Creating & Dividing Up Dataframes...............
 
     if(length(x) > 1000){
-      labelpercent <- 1
+      labelpercent <- .005
     } else if(length(x) > 100){
-      labelpercent <- 2
+      labelpercent <- 1
     } else if(length(x) > 50){
-      labelpercent <- 4
+      labelpercent <- 2
     } else {
-      labelpercent <- 7
+      labelpercent <- 3
     }
 
     to.label <-

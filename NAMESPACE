@@ -3,6 +3,7 @@
 export(outlierplot)
 export(outlierplotold)
 export(outlierplotold2)
+importFrom(FastPCS,FastPCS)
 importFrom(OutliersO3,O3prep)
 importFrom(dplyr,mutate)
 importFrom(ggplot2,aes)
