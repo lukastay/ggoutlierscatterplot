@@ -11,7 +11,7 @@
 #' @param alpha Transparency of scatterplot points.
 #' @param withcolor Set to FALSE for black and white graph. Defalts to TRUE.
 #' @param notheme Set to false to avoid setting theme.
-#' @param detection.method Method of outlier detection ("HDo", "PCS", "BAC", "adjOut", "DDC", "MCD")
+#' @param detection.method Method of outlier detection ("HDo", "PCS", adjOut", "DDC", "MCD")
 #' @param default.title Set to true to have title be name of outlier detection method and number of outliers found.
 #'
 #' @export outlierplot
