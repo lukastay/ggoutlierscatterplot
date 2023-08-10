@@ -28,7 +28,7 @@ outlierplot(
 
 \item{notheme}{Set to false to avoid setting theme.}
 
-\item{detection.method}{Method of outlier detection ("HDo", "PCS", "BAC", "adjOut", "DDC", "MCD")}
+\item{detection.method}{Method of outlier detection ("HDo", "PCS", adjOut", "DDC", "MCD")}
 
 \item{default.title}{Set to true to have title be name of outlier detection method and number of outliers found.}
 }
