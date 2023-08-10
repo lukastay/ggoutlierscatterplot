@@ -1,7 +1,7 @@
 # ggoutlierscatterplot by Lukas Taylor
 R Language: Visualize multidimensional outlier detection algorithms on a scatterplot
 
-![outlier scatterplot example](https://github.com/lukastay/ggoutlierscatterplot/blob/main/plotexample.tiff?raw=true)
+![outlier scatterplot example](images/plotexample.png?raw=true)
 
 Just as there is no single formula for determining outliers in one dimension, there are multiple ways of categorizing outliers from points in two dimensional space. This package visualizes different outlier detection algorithms on a scatterplot.
 
@@ -24,7 +24,7 @@ You can also use other methods of outlier detection. The allmethods function ret
 allmethods(x = x, y = y)
 ```
 
-![outlier scatterplot allmethods example](https://github.com/lukastay/ggoutlierscatterplot/blob/main/plotexample.allmethods.tiff?raw=true)
+![outlier scatterplot allmethods example](images/plotexample.allmethods.png?raw=true)
 
 You can choose your outlier detection method using the detction.method argument. You can choose from: "HDo", "PCS", "BAC", "adjOut", "DDC", & "MCD".
 
